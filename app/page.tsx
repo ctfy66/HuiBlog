@@ -29,7 +29,8 @@ export default function Home() {
           关于我
         </h3>
         <p className="text-text-200 font-sans leading-relaxed mb-4">
-          AI提效信徒, 致力于让AI参与到生活的方方面面.
+          我是余辉,AI提效信徒, 致力于让AI参与到生活的方方面面.
+          这是我的博客, 记录我的思考.欢迎交流.
         </p>
       
       </div>
@@ -39,7 +40,7 @@ export default function Home() {
       {/* Contact Section */}
       <div className="mb-20">
         <h3 className="font-display font-bold text-2xl mb-6 text-text-100 text-center">
-          保持联系
+          联系方式
         </h3>
         <div className="flex flex-wrap justify-center gap-4">
           <a 
