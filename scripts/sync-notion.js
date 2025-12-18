@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+// 映射文件路径
+const SYNC_MAP_FILE = path.join(process.cwd(), '.notion-sync-map.json');
+
 // 初始化Notion客户端
 function initNotionClient() {
   const apiKey = process.env.NOTION_API_KEY;
@@ -91,6 +94,7 @@ async function convertNotionPageToMarkdown(client, n2m, pageId) {
       content: content.parent,
       images,
       pageId,
+      lastEditedTime: page.last_edited_time,
     };
   } catch (error) {
     console.error(`Error converting page ${pageId}:`, error.message);
@@ -141,8 +145,81 @@ function generateFileName(title, pageId) {
   return `${sanitized}.md`;
 }
 
+// 读取映射文件
+function loadSyncMap() {
+  try {
+    if (fs.existsSync(SYNC_MAP_FILE)) {
+      const content = fs.readFileSync(SYNC_MAP_FILE, 'utf8');
+      return JSON.parse(content);
+    }
+  } catch (error) {
+    console.warn('Warning: Failed to load sync map, creating new one:', error.message);
+  }
+  return { lastSync: null, pages: {} };
+}
+
+// 保存映射文件
+function saveSyncMap(syncMap) {
+  try {
+    fs.writeFileSync(SYNC_MAP_FILE, JSON.stringify(syncMap, null, 2), 'utf8');
+    console.log('Sync map saved successfully');
+  } catch (error) {
+    console.error('Error saving sync map:', error.message);
+    throw error;
+  }
+}
+
+// 归档文件
+function archivePost(fileName, pageId) {
+  try {
+    const postsDir = path.join(process.cwd(), 'posts');
+    const publicPostsDir = path.join(process.cwd(), 'public', 'posts');
+    
+    // 创建归档目录（按日期）
+    const archiveDate = new Date().toISOString().split('T')[0];
+    const archiveDir = path.join(postsDir, 'archived', archiveDate);
+    const archivePublicDir = path.join(publicPostsDir, 'archived', archiveDate);
+    
+    if (!fs.existsSync(archiveDir)) {
+      fs.mkdirSync(archiveDir, { recursive: true });
+    }
+    if (!fs.existsSync(archivePublicDir)) {
+      fs.mkdirSync(archivePublicDir, { recursive: true });
+    }
+    
+    // 移动Markdown文件
+    const sourcePath = path.join(postsDir, fileName);
+    const targetPath = path.join(archiveDir, fileName);
+    
+    if (fs.existsSync(sourcePath)) {
+      fs.renameSync(sourcePath, targetPath);
+      console.log(`  Archived: ${fileName} -> archived/${archiveDate}/`);
+    }
+    
+    // 移动关联的图片文件
+    if (fs.existsSync(publicPostsDir)) {
+      const files = fs.readdirSync(publicPostsDir);
+      const imagePattern = new RegExp(`^${pageId}-\\d+\\.(png|jpg|jpeg|gif|webp|svg)$`, 'i');
+      
+      files.forEach(file => {
+        if (imagePattern.test(file)) {
+          const imageSource = path.join(publicPostsDir, file);
+          const imageTarget = path.join(archivePublicDir, file);
+          fs.renameSync(imageSource, imageTarget);
+          console.log(`  Archived image: ${file}`);
+        }
+      });
+    }
+    
+    return true;
+  } catch (error) {
+    console.error(`  Error archiving ${fileName}:`, error.message);
+    return false;
+  }
+}
+
 // 保存Markdown文件
-async function saveMarkdownFile(fileName, frontmatter, content, images, pageId) {
+async function saveMarkdownFile(fileName, frontmatter, content, images, pageId, lastEditedTime) {
   const postsDir = path.join(process.cwd(), 'posts');
   const publicPostsDir = path.join(process.cwd(), 'public', 'posts');
 
@@ -180,6 +257,8 @@ async function saveMarkdownFile(fileName, frontmatter, content, images, pageId) 
   const frontmatterStr = `---
 title: '${frontmatter.title.replace(/'/g, "''")}'
 date: '${frontmatter.date}'
+notionId: '${pageId}'
+lastEdited: '${lastEditedTime}'
 ---
 
 `;
@@ -201,18 +280,27 @@ async function main() {
     const { client, n2m, databaseId } = initNotionClient();
     console.log('Notion client initialized');
 
+    // 加载映射文件
+    const syncMap = loadSyncMap();
+    console.log('Sync map loaded');
+
     // 查询已发布的文章
     const publishedPosts = await getPublishedPosts(client, databaseId);
-    console.log(`Found ${publishedPosts.length} published posts`);
+    console.log(`Found ${publishedPosts.length} published posts in Notion`);
 
-    if (publishedPosts.length === 0) {
-      console.log('No posts to sync');
-      return;
-    }
+    // 创建Notion文章ID集合
+    const notionPageIds = new Set(publishedPosts.map(post => post.id.replace(/-/g, '')));
 
     let newCount = 0;
     let updateCount = 0;
+    let archiveCount = 0;
     let errorCount = 0;
+
+    // 新的映射对象
+    const newSyncMap = {
+      lastSync: new Date().toISOString(),
+      pages: {}
+    };
 
     // 遍历每篇文章
     for (const post of publishedPosts) {
@@ -221,7 +309,7 @@ async function main() {
         console.log(`\nProcessing page: ${pageId}`);
 
         // 转换内容
-        const { title, date, content, images } = await convertNotionPageToMarkdown(
+        const { title, date, content, images, lastEditedTime } = await convertNotionPageToMarkdown(
           client,
           n2m,
           pageId
@@ -234,28 +322,82 @@ async function main() {
         const fileName = generateFileName(title, pageId);
         console.log(`  File: ${fileName}`);
 
+        // 检测是新增还是修改
+        const existingEntry = syncMap.pages[pageId];
+        let isNew = !existingEntry;
+        let isUpdated = false;
+
+        if (existingEntry) {
+          // 比对last_edited_time
+          if (existingEntry.lastEdited !== lastEditedTime) {
+            console.log(`  Detected changes (last edited: ${lastEditedTime})`);
+            isUpdated = true;
+          } else {
+            console.log(`  No changes detected, skipping...`);
+            // 保持映射信息
+            newSyncMap.pages[pageId] = existingEntry;
+            continue;
+          }
+        } else {
+          console.log(`  New post detected`);
+        }
+
         // 保存文件
         await saveMarkdownFile(
           fileName,
           { title, date },
           content,
           images,
-          pageId
+          pageId,
+          lastEditedTime
         );
 
-        console.log(`  ✓ Saved successfully`);
-        newCount++;
+        // 更新映射
+        newSyncMap.pages[pageId] = {
+          fileName: fileName,
+          lastEdited: lastEditedTime,
+          title: title
+        };
+
+        if (isNew) {
+          console.log(`  ✓ Added successfully`);
+          newCount++;
+        } else if (isUpdated) {
+          console.log(`  ✓ Updated successfully`);
+          updateCount++;
+        }
       } catch (error) {
         console.error(`  ✗ Error processing post:`, error.message);
         errorCount++;
       }
     }
 
+    // 检测需要归档的文章（在映射中但不在Notion中）
+    console.log('\n' + '-'.repeat(50));
+    console.log('Checking for posts to archive...');
+    
+    for (const [pageId, pageInfo] of Object.entries(syncMap.pages)) {
+      if (!notionPageIds.has(pageId)) {
+        console.log(`\nArchiving: ${pageInfo.title}`);
+        const success = archivePost(pageInfo.fileName, pageId);
+        if (success) {
+          archiveCount++;
+        } else {
+          errorCount++;
+        }
+      }
+    }
+
+    // 保存更新后的映射文件
+    saveSyncMap(newSyncMap);
+
     // 输出统计
     console.log('\n' + '='.repeat(50));
     console.log('Sync completed!');
-    console.log(`Total: ${publishedPosts.length} posts`);
-    console.log(`Synced: ${newCount} posts`);
+    console.log(`Notion posts: ${publishedPosts.length}`);
+    console.log(`New: ${newCount} posts`);
+    console.log(`Updated: ${updateCount} posts`);
+    console.log(`Archived: ${archiveCount} posts`);
     console.log(`Errors: ${errorCount} posts`);
     console.log('='.repeat(50));
 
