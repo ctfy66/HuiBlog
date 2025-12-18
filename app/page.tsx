@@ -2,6 +2,7 @@ import { getSortedPostsData } from '@/lib/posts';
 import Link from 'next/link';
 import Date from '@/components/Date';
 import Image from 'next/image';
+import { Mail, Github, Twitter, Terminal, Coffee, Code2 } from 'lucide-react';
 
 export default function Home() {
   const allPostsData = getSortedPostsData();
@@ -9,43 +10,55 @@ export default function Home() {
   return (
     <section className="max-w-2xl mx-auto px-4 pb-12">
       {/* Hero Section */}
-      <div className="flex flex-col items-center text-center mb-16">
-        <div className="relative w-32 h-32 mb-6 overflow-hidden rounded-full border-4 border-text-100/10">
-           {/* Placeholder for user photo - using globe.svg temporarily */}
+      <div className="flex flex-col items-center text-center mb-16 pt-8">
+        <div className="relative w-32 h-32 mb-6 overflow-hidden rounded-full border-4 border-text-100/10 shadow-lg">
+           {/* 用户照片占位符 */}
            <Image 
-             src="/globe.svg" 
+             src="/head.jpg" 
              alt="余辉"
              fill
-             className="object-cover p-4 bg-text-200/5"
+             className="object-cover hover:scale-105 transition-transform duration-500"
            />
         </div>
-        <h2 className="text-3xl font-display font-bold text-text-100 mb-3">
-          你好，我是余辉 👋
-        </h2>
-        <p className="text-lg text-text-200 font-sans max-w-lg">
-          全栈开发者 / 技术博主 / 生活观察者
-        </p>
+        
       </div>
 
-      {/* Intro Section */}
-      <div className="prose prose-neutral mb-16 max-w-none">
-        <p className="text-text-200 font-sans leading-relaxed text-lg text-center">
-          热衷于构建优雅的 Web 应用，探索新技术的边界。在这个快节奏的数字时代，我试图通过代码和文字，记录下思考的痕迹。欢迎来到我的数字花园。
+      {/* About Section */}
+      <div className="prose prose-neutral mb-12 max-w-none">
+        <h3 className="font-display font-bold text-2xl mb-4 text-text-100 flex items-center gap-2">
+          关于我
+        </h3>
+        <p className="text-text-200 font-sans leading-relaxed mb-4">
+          AI提效信徒, 致力于让AI参与到生活的方方面面.
         </p>
+      
       </div>
 
+      
+      
       {/* Contact Section */}
-      <div className="mb-20 flex justify-center">
+      <div className="mb-20">
+        <h3 className="font-display font-bold text-2xl mb-6 text-text-100 text-center">
+          保持联系
+        </h3>
         <div className="flex flex-wrap justify-center gap-4">
-          <a href="mailto:contact@example.com" className="px-6 py-2 rounded-full bg-text-100 text-background hover:opacity-90 transition-opacity text-sm font-medium">
-            Email Me
+          <a 
+            href="csgo74753@gmail.com" 
+            className="flex items-center gap-2 px-6 py-3 rounded-full bg-text-100 text-background hover:opacity-90 transition-opacity font-medium shadow-sm"
+          >
+            <Mail className="w-4 h-4" />
+            <span>Email Me</span>
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full border border-text-200/30 text-text-100 hover:bg-text-200/5 transition-colors text-sm font-medium">
-            GitHub
+          <a 
+            href="https://github.com/ctfy66" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center gap-2 px-6 py-3 rounded-full border border-text-200/30 text-text-100 hover:bg-text-200/5 transition-colors font-medium"
+          >
+            <Github className="w-4 h-4" />
+            <span>GitHub</span>
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="px-6 py-2 rounded-full border border-text-200/30 text-text-100 hover:bg-text-200/5 transition-colors text-sm font-medium">
-            Twitter
-          </a>
+          
         </div>
       </div>
 
@@ -61,7 +74,8 @@ export default function Home() {
                 <h4 className="text-xl md:text-2xl font-display font-semibold mb-2 text-text-100 group-hover:text-text-200 transition-colors leading-tight">
                   {title}
                 </h4>
-                <div className="text-sm font-sans text-text-200 uppercase tracking-wider">
+                <div className="text-sm font-sans text-text-200 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-8 h-[1px] bg-text-200/30"></span>
                   <Date dateString={date} />
                 </div>
               </Link>
