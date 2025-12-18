@@ -6,7 +6,7 @@ export default function Header() {
       <div className="max-w-2xl mx-auto px-4 text-center">
         <Link href="/" className="inline-block group">
           <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-text-100 group-hover:text-text-200 transition-colors">
-            Hui Blog
+            HuiBlog
           </h1>
         </Link>
       </div>
