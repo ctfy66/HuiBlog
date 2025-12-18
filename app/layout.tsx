@@ -18,8 +18,8 @@ const merriweather = Merriweather({
 });
 
 export const metadata: Metadata = {
-  title: "Hui Blog",
-  description: "A personal blog.",
+  title: "余辉 - 个人主页",
+  description: "余辉的个人主页，分享技术与生活。",
 };
 
 export default function RootLayout({
