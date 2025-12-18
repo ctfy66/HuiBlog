@@ -7,15 +7,6 @@ date: '2025-12-18'
 # Gemini CLI 系统提示词完整分析文档
 
 
-## 目录
-
-- [概述](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E6%A6%82%E8%BF%B0)
-- [架构设计](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1)
-- [完整提示词内容](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E5%AE%8C%E6%95%B4%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%86%85%E5%AE%B9)
-- [模块详细解析](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E6%A8%A1%E5%9D%97%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90)
-- [设计原则与最佳实践](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5)
-- [调用关系](https://www.notion.so/2cd651e18f608050bda6e89d6d36e2cf#%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB)
-
 ---
 
 
