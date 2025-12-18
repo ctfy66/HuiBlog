@@ -1,6 +1,8 @@
 ---
 title: 'Gemini CLI 提示词工程'
 date: '2025-12-18'
+notionId: '2cd651e18f608091b434ca9dc362ddfa'
+lastEdited: '2025-12-18T07:59:00.000Z'
 ---
 
 
