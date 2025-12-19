@@ -30,8 +30,13 @@ export default function Home() {
         </h3>
         <p className="text-text-200 font-sans leading-relaxed mb-4">
           我是余辉,AI提效信徒, 致力于让AI参与到生活的方方面面.
-          这是我的博客, 记录我的思考.欢迎交流.
+          
         </p>
+        <p className="text-text-200 font-sans leading-relaxed mb-4">
+        这是我的博客, 记录我的思考.欢迎交流.
+          
+        </p>
+
       
       </div>
 
@@ -44,7 +49,7 @@ export default function Home() {
         </h3>
         <div className="flex flex-wrap justify-center gap-4">
           <a 
-            href="csgo74753@gmail.com" 
+            href="mailto:csgo74753@gmail.com" 
             className="flex items-center gap-2 px-6 py-3 rounded-full bg-text-100 text-background hover:opacity-90 transition-opacity font-medium shadow-sm"
           >
             <Mail className="w-4 h-4" />
