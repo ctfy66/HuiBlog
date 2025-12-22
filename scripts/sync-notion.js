@@ -79,19 +79,26 @@ async function convertNotionPageToMarkdown(client, n2m, pageId) {
     // 转换内容为Markdown
     const mdblocks = await n2m.pageToMarkdown(pageId);
     const content = n2m.toMarkdownString(mdblocks);
+    
+    // 确保内容存在，处理可能的 undefined
+    const markdownContent = content?.parent || content || '';
+    
+    if (!markdownContent || markdownContent.trim() === '') {
+      console.warn(`  Warning: Page ${pageId} has no content or unsupported block types`);
+    }
 
     // 提取图片URL
     const images = [];
     const imageRegex = /!\[.*?\]\((https:\/\/.*?)\)/g;
     let match;
-    while ((match = imageRegex.exec(content.parent)) !== null) {
+    while ((match = imageRegex.exec(markdownContent)) !== null) {
       images.push(match[1]);
     }
 
     return {
       title,
       date,
-      content: content.parent,
+      content: markdownContent,
       images,
       pageId,
       lastEditedTime: page.last_edited_time,
