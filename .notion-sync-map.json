@@ -1,6 +1,11 @@
 {
-  "lastSync": "2025-12-22T13:00:00.544Z",
+  "lastSync": "2025-12-22T13:02:22.278Z",
   "pages": {
+    "2d1651e18f6080959c80df5ca0ee201e": {
+      "fileName": "GeminiCLI-研究.md",
+      "lastEdited": "2025-12-22T13:01:00.000Z",
+      "title": "GeminiCLI 研究"
+    },
     "2d1651e18f6080829932e7dfa63eea12": {
       "fileName": "Auto-Deployer：基于-LLM-Agent-的智能部署系统.md",
       "lastEdited": "2025-12-22T12:45:00.000Z",
