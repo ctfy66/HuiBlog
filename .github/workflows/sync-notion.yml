@@ -49,9 +49,17 @@ jobs:
       
       - name: Commit and push changes
         run: |
-          git add posts/ public/posts/
+          git add posts/ public/posts/ .notion-sync-map.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: sync posts from Notion [skip ci]"
+            # 先拉取远程更改并尝试变基
+            git pull --rebase origin master
+            # 如果有冲突，使用我们的版本（posts目录优先使用本地）
+            if [ $? -ne 0 ]; then
+              git checkout --ours posts/ public/posts/ .notion-sync-map.json
+              git add posts/ public/posts/ .notion-sync-map.json
+              git rebase --continue
+            fi
             git push
             echo "Changes committed and pushed"
           else
