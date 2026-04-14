@@ -1,45 +1,45 @@
 {
-  "lastSync": "2026-04-14T18:28:15.934Z",
+  "lastSync": "2026-04-14T19:32:14.266Z",
   "pages": {
-    "2cd651e18f608025ac8cfa816485a12e": {
-      "fileName": "geminiCLI-研究.md",
-      "lastEdited": "2025-12-18T07:58:00.000Z",
-      "title": "geminiCLI 研究"
-    },
-    "2cd651e18f608091b434ca9dc362ddfa": {
-      "fileName": "Gemini-CLI-提示词工程.md",
-      "lastEdited": "2025-12-18T07:59:00.000Z",
-      "title": "Gemini CLI 提示词工程"
-    },
-    "2cd651e18f608023850dff8f8dbb39fc": {
-      "fileName": "BOSS直聘数据分析.md",
-      "lastEdited": "2025-12-18T12:28:00.000Z",
-      "title": "BOSS直聘数据分析"
-    },
-    "2ce651e18f6080e6b123db25a472b436": {
-      "fileName": "Agent-工程的思考.md",
-      "lastEdited": "2025-12-19T06:42:00.000Z",
-      "title": "Agent 工程的思考"
-    },
-    "2d1651e18f6080829932e7dfa63eea12": {
-      "fileName": "Auto-Deployer：基于-LLM-Agent-的智能部署系统.md",
-      "lastEdited": "2025-12-22T12:45:00.000Z",
-      "title": "Auto-Deployer：基于 LLM Agent 的智能部署系统"
-    },
-    "2d1651e18f6080959c80df5ca0ee201e": {
-      "fileName": "GeminiCLI-研究.md",
-      "lastEdited": "2025-12-22T13:01:00.000Z",
-      "title": "GeminiCLI 研究"
+    "2dc651e18f608083b64ec4e59ae1e920": {
+      "fileName": "2025年终总结.md",
+      "lastEdited": "2026-01-02T06:31:00.000Z",
+      "title": "2025年终总结"
     },
     "2d8651e18f6080daadc6c1f9dfb7b19d": {
       "fileName": "后端转Agent开发.-我的心得体会.md",
       "lastEdited": "2025-12-29T09:48:00.000Z",
       "title": "后端转Agent开发. 我的心得体会"
     },
-    "2dc651e18f608083b64ec4e59ae1e920": {
-      "fileName": "2025年终总结.md",
-      "lastEdited": "2026-01-02T06:31:00.000Z",
-      "title": "2025年终总结"
+    "2d1651e18f6080959c80df5ca0ee201e": {
+      "fileName": "GeminiCLI-研究.md",
+      "lastEdited": "2025-12-22T13:01:00.000Z",
+      "title": "GeminiCLI 研究"
+    },
+    "2d1651e18f6080829932e7dfa63eea12": {
+      "fileName": "Auto-Deployer：基于-LLM-Agent-的智能部署系统.md",
+      "lastEdited": "2025-12-22T12:45:00.000Z",
+      "title": "Auto-Deployer：基于 LLM Agent 的智能部署系统"
+    },
+    "2ce651e18f6080e6b123db25a472b436": {
+      "fileName": "Agent-工程的思考.md",
+      "lastEdited": "2025-12-19T06:42:00.000Z",
+      "title": "Agent 工程的思考"
+    },
+    "2cd651e18f608023850dff8f8dbb39fc": {
+      "fileName": "BOSS直聘数据分析.md",
+      "lastEdited": "2025-12-18T12:28:00.000Z",
+      "title": "BOSS直聘数据分析"
+    },
+    "2cd651e18f608091b434ca9dc362ddfa": {
+      "fileName": "Gemini-CLI-提示词工程.md",
+      "lastEdited": "2025-12-18T07:59:00.000Z",
+      "title": "Gemini CLI 提示词工程"
+    },
+    "2cd651e18f608025ac8cfa816485a12e": {
+      "fileName": "geminiCLI-研究.md",
+      "lastEdited": "2025-12-18T07:58:00.000Z",
+      "title": "geminiCLI 研究"
     }
   }
 }
